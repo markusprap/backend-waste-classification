@@ -114,17 +114,10 @@ const createPaymentTransaction = async (request, h) => {
         description: plan === 'premium' 
           ? 'Unlimited classifications, Detailed analytics, Priority support'
           : 'Free plan with basic features'
-      }],
-      callbacks: {
-        finish: process.env.MIDTRANS_ENV === 'production'
-          ? `${process.env.FRONTEND_URL}/payment/success`
-          : 'http://localhost:3000/payment/success',
-        error: process.env.MIDTRANS_ENV === 'production'
-          ? `${process.env.FRONTEND_URL}/payment/error`
-          : 'http://localhost:3000/payment/error',
-        pending: process.env.MIDTRANS_ENV === 'production'
-          ? `${process.env.FRONTEND_URL}/payment/pending`
-          : 'http://localhost:3000/payment/pending'
+      }],      callbacks: {
+        finish: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/payment/success`,
+        error: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/payment/error`,
+        pending: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/payment/pending`
       }
     };
 
