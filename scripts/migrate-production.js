@@ -13,14 +13,13 @@ async function runMigration() {
         }
         
         console.log('📍 Database URL configured');
-        
-        // Generate Prisma client
+          // Generate Prisma client
         console.log('🔨 Generating Prisma client...');
-        execSync('npx prisma generate', { stdio: 'inherit' });
+        execSync('npx prisma generate --schema=database/prisma/schema.prisma', { stdio: 'inherit' });
         
         // Run migrations
         console.log('🚀 Running database migrations...');
-        execSync('npx prisma migrate deploy', { stdio: 'inherit' });
+        execSync('npx prisma migrate deploy --schema=database/prisma/schema.prisma', { stdio: 'inherit' });
         
         console.log('✅ Migration completed successfully!');
         
