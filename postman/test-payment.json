@@ -1,0 +1,22 @@
+{
+  "name": "Test Payment Creation",
+  "request": {
+    "method": "POST",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n  \"userId\": \"test-user-payment\",\n  \"email\": \"markus.test@example.com\",\n  \"fullName\": \"Markus Pramono\",\n  \"plan\": \"premium\",\n  \"amount\": 99000,\n  \"currency\": \"IDR\"\n}"
+    },
+    "url": {
+      "raw": "{{baseUrl}}/api/payment/charge",
+      "host": ["{{baseUrl}}"],
+      "path": ["api", "payment", "charge"]
+    }
+  },
+  "response": []
+}

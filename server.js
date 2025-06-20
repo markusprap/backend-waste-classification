@@ -107,16 +107,26 @@ const init = async () => {
         method: 'GET',
         path: '/api/ml-service-status',
         handler: classificationController.getMLServiceStatus
-    });
-
-    // Add a simple debug endpoint
+    });    // Add a detailed debug endpoint
     server.route({
         method: 'GET',
         path: '/api/debug',
         handler: (request, h) => {
             return { 
                 message: 'Debug endpoint working',
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                environment: process.env.NODE_ENV || 'development',
+                midtrans: {
+                    clientKeyConfigured: !!process.env.MIDTRANS_CLIENT_KEY,
+                    serverKeyConfigured: !!process.env.MIDTRANS_SERVER_KEY,
+                    merchantIdConfigured: !!process.env.MIDTRANS_MERCHANT_ID,
+                    environment: process.env.MIDTRANS_ENV || 'not set',
+                    clientKeyPrefix: process.env.MIDTRANS_CLIENT_KEY ? process.env.MIDTRANS_CLIENT_KEY.substring(0, 10) + '...' : 'not set'
+                },
+                urls: {
+                    frontend: process.env.FRONTEND_URL || 'not set',
+                    mlService: process.env.ML_SERVICE_URL || 'not set'
+                }
             };
         }
     });

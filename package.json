@@ -16,8 +16,11 @@
     "migrate:deploy": "prisma migrate deploy --schema=database/prisma/schema.prisma",
     "migrate:reset": "prisma migrate reset --schema=database/prisma/schema.prisma",
     "db:generate": "prisma generate --schema=database/prisma/schema.prisma",
-    "db:studio": "prisma studio --schema=database/prisma/schema.prisma",
-    "db:seed": "node scripts/init-db.js"
+    "db:studio": "prisma studio --schema=database/prisma/schema.prisma",    "db:seed": "node scripts/init-db.js",
+    "seed": "node scripts/seed-database.js",
+    "seed:prod": "NODE_ENV=production node scripts/seed-database.js",
+    "migrate:data": "node scripts/migrate-data.js",
+    "export:data": "node scripts/migrate-data.js"
   },  "dependencies": {
     "@hapi/boom": "^10.0.1",
     "@hapi/hapi": "^21.4.0",

@@ -1,4 +1,86 @@
-// This is your Prisma schema file,
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+
+async function quickExportSQLite() {
+  try {
+    console.log('📤 Quick export using manual schema switch...');
+    
+    // Backup current schema
+    const schemaPath = path.join(__dirname, '..', 'database', 'prisma', 'schema.prisma');
+    const currentSchema = fs.readFileSync(schemaPath, 'utf8');
+    
+    // Create temporary SQLite schema
+    const sqliteSchema = currentSchema.replace(
+      'provider = "postgresql"',
+      'provider = "sqlite"'
+    ).replace(
+      'url      = env("DATABASE_URL")',
+      'url      = "file:./dev.db"'
+    );
+    
+    // Write temporary schema
+    fs.writeFileSync(schemaPath, sqliteSchema);
+    console.log('📝 Temporary SQLite schema written');
+    
+    // Generate SQLite client
+    const { execSync } = require('child_process');
+    execSync('npx prisma generate --schema=database/prisma/schema.prisma', { stdio: 'inherit' });
+    
+    // Now we can export data
+    const { PrismaClient } = require('@prisma/client');
+    const prisma = new PrismaClient();
+    
+    console.log('🏪 Exporting waste banks...');
+    const wasteBanks = await prisma.wasteBank.findMany();
+    
+    console.log('📰 Exporting articles...');
+    const articles = await prisma.article.findMany();
+    
+    console.log('👤 Exporting users...');
+    const users = await prisma.user.findMany();
+    
+    console.log('🗂️ Exporting classifications...');
+    const classifications = await prisma.classification.findMany();
+    
+    console.log('💳 Exporting subscriptions...');
+    const subscriptions = await prisma.subscription.findMany();
+    
+    const exportedData = {
+      wasteBanks,
+      articles,
+      users,
+      classifications,
+      subscriptions,
+      exportDate: new Date().toISOString()
+    };
+    
+    // Save export data
+    const exportFile = `exported-data-${new Date().toISOString().split('T')[0]}.json`;
+    fs.writeFileSync(exportFile, JSON.stringify(exportedData, null, 2));
+    console.log(`💾 Data exported to: ${exportFile}`);
+    
+    // Cleanup
+    await prisma.$disconnect();
+    
+    // Restore PostgreSQL schema
+    fs.writeFileSync(schemaPath, currentSchema);
+    console.log('🔄 PostgreSQL schema restored');
+    
+    // Regenerate PostgreSQL client
+    execSync('npx prisma generate --schema=database/prisma/schema.prisma', { stdio: 'inherit' });
+    console.log('✅ PostgreSQL client regenerated');
+    
+    return exportedData;
+    
+  } catch (error) {
+    console.error('❌ Error in quick export:', error);
+    
+    // Restore schema on error
+    try {
+      const schemaPath = path.join(__dirname, '..', 'database', 'prisma', 'schema.prisma');
+      const postgresqlSchema = `// This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
@@ -140,4 +222,21 @@ model Article {
   updatedAt   DateTime @updatedAt
   
   @@map("articles")
+}`;
+      
+      fs.writeFileSync(schemaPath, postgresqlSchema);
+      console.log('🔄 Schema restored to PostgreSQL');
+    } catch (restoreError) {
+      console.error('❌ Failed to restore schema:', restoreError);
+    }
+    
+    throw error;
+  }
 }
+
+// Run if called directly
+if (require.main === module) {
+  quickExportSQLite();
+}
+
+module.exports = { quickExportSQLite };

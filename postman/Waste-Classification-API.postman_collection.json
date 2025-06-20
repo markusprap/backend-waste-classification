@@ -1,0 +1,306 @@
+{
+  "info": {
+    "name": "Waste Classification API",
+    "description": "Complete API collection for testing Waste Classification Backend deployed on Railway",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health & Status",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Debug Endpoint",
+          "request": {
+            "method": "GET", 
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/debug",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "debug"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ML Service Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/ml-service-status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ml-service-status"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Classification",
+      "item": [
+        {
+          "name": "Classify Waste Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "{{testImagePath}}",
+                  "description": "Upload image file for waste classification"
+                },
+                {
+                  "key": "userId",
+                  "value": "{{userId}}",
+                  "type": "text",
+                  "description": "Optional: User ID for tracking"
+                },
+                {
+                  "key": "location",
+                  "value": "{\"lat\": -6.200000, \"lng\": 106.816666}",
+                  "type": "text",
+                  "description": "Optional: GPS location JSON"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/classify",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "classify"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Articles",
+      "item": [
+        {
+          "name": "Get All Articles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/articles",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "articles"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Article by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/articles/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "articles", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "article-id-here"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Article (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Tips Mengurangi Sampah Plastik\",\n  \"slug\": \"tips-mengurangi-sampah-plastik\",\n  \"content\": \"Sampah plastik adalah salah satu masalah lingkungan terbesar...\",\n  \"excerpt\": \"Pelajari cara efektif mengurangi penggunaan plastik dalam kehidupan sehari-hari\",\n  \"category\": \"plastic\",\n  \"tags\": \"plastik,tips,lingkungan,zero-waste\",\n  \"readTime\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/articles",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "articles"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Waste Banks",
+      "item": [
+        {
+          "name": "Get All Waste Banks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/waste-banks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "waste-banks"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Waste Bank",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"Bank Sampah Jakarta Selatan\",\n  \"alamat\": \"Jl. Mampang Prapatan No. 123, Jakarta Selatan\",\n  \"latitude\": -6.241586,\n  \"longitude\": 106.794964,\n  \"telepon\": \"021-12345678\",\n  \"email\": \"info@banksampahjaksel.com\",\n  \"jamOperasi\": \"Senin-Jumat 08:00-16:00\",\n  \"jenisWaste\": \"plastik,kertas,logam,kaca\",\n  \"deskripsi\": \"Bank sampah yang melayani wilayah Jakarta Selatan dengan fokus pada daur ulang plastik dan kertas\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/waste-banks",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "waste-banks"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payment",
+      "item": [
+        {
+          "name": "Create Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"plan\": \"premium\",\n  \"amount\": 10000,\n  \"currency\": \"IDR\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/payment/charge",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payment", "charge"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Payment Notification (Webhook)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type", 
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_status\": \"settlement\",\n  \"order_id\": \"order-123\",\n  \"gross_amount\": \"10000.00\",\n  \"payment_type\": \"bank_transfer\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/payment/notification",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payment", "notification"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/:userId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", ":userId"],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "{{userId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Markus Pramono\",\n  \"email\": \"markus@example.com\",\n  \"plan\": \"premium\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/:userId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", ":userId"],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "{{userId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://backend-waste-classification-production.up.railway.app"
+    }
+  ]
+}

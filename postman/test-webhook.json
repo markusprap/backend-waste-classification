@@ -1,0 +1,27 @@
+{
+  "name": "Test Webhook Notification",
+  "request": {
+    "method": "POST",
+    "header": [
+      {
+        "key": "Content-Type",
+        "value": "application/json"
+      },
+      {
+        "key": "x-signature",
+        "value": "test-signature",
+        "description": "Midtrans akan automatically generate signature"
+      }
+    ],
+    "body": {
+      "mode": "raw",
+      "raw": "{\n  \"transaction_time\": \"2025-06-20 20:30:15\",\n  \"transaction_status\": \"settlement\",\n  \"transaction_id\": \"12345678-1234-1234-1234-123456789012\",\n  \"status_message\": \"midtrans payment notification\",\n  \"status_code\": \"200\",\n  \"signature_key\": \"abc123def456\",\n  \"settlement_time\": \"2025-06-20 20:30:20\",\n  \"payment_type\": \"bank_transfer\",\n  \"order_id\": \"premium-subscription-test-123\",\n  \"merchant_id\": \"G932456516\",\n  \"gross_amount\": \"99000.00\",\n  \"fraud_status\": \"accept\",\n  \"currency\": \"IDR\"\n}"
+    },
+    "url": {
+      "raw": "{{baseUrl}}/api/payment/notification",
+      "host": ["{{baseUrl}}"],
+      "path": ["api", "payment", "notification"]
+    }
+  },
+  "response": []
+}
