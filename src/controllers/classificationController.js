@@ -38,6 +38,8 @@ const classifyWaste = async (request, h) => {
     }
 
     console.log(`Backend: Calling ML service at ${ML_SERVICE_URL}/api/classify`);
+    console.log('Current ML_SERVICE_URL:', ML_SERVICE_URL);
+    console.log('Expected URL:', 'https://ml-service-waste-classification-production.up.railway.app');
     
     const mlResponse = await fetch(`${ML_SERVICE_URL}/api/classify`, {
       method: 'POST',
@@ -184,8 +186,30 @@ const testMLService = async (request, h) => {
   }
 };
 
+const debugEnvironment = async (request, h) => {
+  try {
+    return h.response({
+      success: true,
+      environment: {
+        ML_SERVICE_URL: process.env.ML_SERVICE_URL,
+        NODE_ENV: process.env.NODE_ENV,
+        PORT: process.env.PORT,
+        expected_ml_url: 'https://ml-service-waste-classification-production.up.railway.app',
+        url_matches: process.env.ML_SERVICE_URL === 'https://ml-service-waste-classification-production.up.railway.app'
+      },
+      timestamp: new Date().toISOString()
+    }).code(200);
+  } catch (error) {
+    return h.response({
+      success: false,
+      error: error.message
+    }).code(500);
+  }
+};
+
 module.exports = {
   classifyWaste,
   getMLServiceStatus,
-  testMLService
+  testMLService,
+  debugEnvironment
 };

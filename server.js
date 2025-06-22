@@ -107,6 +107,13 @@ const init = async () => {
         method: 'GET',
         path: '/api/ml-service-status',
         handler: classificationController.getMLServiceStatus
+    });
+
+    // Add debug environment route
+    server.route({
+        method: 'GET',
+        path: '/api/debug/environment',
+        handler: classificationController.debugEnvironment
     });    // Add a detailed debug endpoint
     server.route({
         method: 'GET',
